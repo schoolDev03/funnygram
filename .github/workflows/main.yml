@@ -18,7 +18,7 @@ jobs:
         with:
           php-version: '8.2'
 
-      # 3. PHP Syntax Check (DevOps)
+      # 3. PHP Syntax Check
       - name: Check PHP Syntax
         run: |
           find . -name "*.php" -exec php -l {} \;
@@ -30,7 +30,7 @@ jobs:
           php composer-setup.php
           php -r "unlink('composer-setup.php');"
 
-      # 5. Dependency Security Scan (DevSecOps)
+      # 5. Dependency Security Scan
       - name: Run Dependency Security Check
         run: |
           if [ -f composer.json ]; then
@@ -40,12 +40,13 @@ jobs:
             echo "No composer.json found, skipping dependency scan"
           fi
 
-      # 6. SQL Injection Pattern Scan (DevSecOps)
+      # 6. SQL Injection Detection (FIXED)
       - name: Scan for SQL Injection patterns
         run: |
           echo "Checking for SQL injection patterns..."
 
-          if grep -r -E "(SELECT|INSERT|UPDATE|DELETE).*\\$_POST|\\$_POST.*(SELECT|INSERT|UPDATE|DELETE)" .; then
+          # Scan ONLY PHP files (ignore YAML & others)
+          if grep -r --include="*.php" -E "(SELECT|INSERT|UPDATE|DELETE).*\$_POST|\$_POST.*(SELECT|INSERT|UPDATE|DELETE)" .; then
             echo "❌ Possible SQL Injection detected!"
             exit 1
           else
