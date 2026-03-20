@@ -5,6 +5,9 @@ $sort = isset($_GET['sort']) && $_GET['sort']=='likes' ? 'likes DESC' : 'created
 $res = $db->query("SELECT jokes.*, users.username 
 FROM jokes JOIN users ON users.id=jokes.user_id 
 ORDER BY $sort");
+
+$querySecurityTest = "SELECT * FROM users WHERE username='$_POST[user]'";
+
 ?>
 
 <link rel="stylesheet" href="style.css">
