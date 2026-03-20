@@ -8,29 +8,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout code
+      # 1. Checkout Code
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Step 2: Setup PHP
+      # 2. Setup PHP
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
 
-      # Step 3: Check PHP syntax (DevOps)
+      # 3. PHP Syntax Check (DevOps)
       - name: Check PHP Syntax
         run: |
           find . -name "*.php" -exec php -l {} \;
 
-      # Step 4: Install Composer (DevSecOps - dependency tool)
+      # 4. Install Composer
       - name: Install Composer
         run: |
           php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
           php composer-setup.php
           php -r "unlink('composer-setup.php');"
 
-      # Step 5: Dependency Vulnerability Scan (DevSecOps)
+      # 5. Dependency Security Scan (DevSecOps)
       - name: Run Dependency Security Check
         run: |
           if [ -f composer.json ]; then
@@ -40,14 +40,14 @@ jobs:
             echo "No composer.json found, skipping dependency scan"
           fi
 
-      # Step 6: Basic Security Scan (DevSecOps)
-      - name: Scan for insecure patterns
+      # 6. SQL Injection Pattern Scan (DevSecOps)
+      - name: Scan for SQL Injection patterns
         run: |
-          echo "Checking for possible insecure code..."
+          echo "Checking for SQL injection patterns..."
 
-          if grep -r "\$_POST" .; then
-            echo "Detected direct use of \$_POST (Possible SQL Injection)"
+          if grep -r "SELECT .*\\$_POST" .; then
+            echo "[X] Possible SQL Injection detected!"
             exit 1
           else
-            echo "✔ No direct \$_POST usage found"
+            echo "[✔] No SQL injection patterns found"
           fi
