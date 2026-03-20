@@ -45,9 +45,9 @@ jobs:
         run: |
           echo "Checking for SQL injection patterns..."
 
-          if grep -r "\$_POST" . | grep -E "SELECT|INSERT|UPDATE|DELETE"; then
-            echo "[X] Possible SQL Injection detected!"
+          if grep -r -E "(SELECT|INSERT|UPDATE|DELETE).*\\$_POST|\\$_POST.*(SELECT|INSERT|UPDATE|DELETE)" .; then
+            echo "❌ Possible SQL Injection detected!"
             exit 1
           else
-            echo "[✔] No SQL injection patterns found"
+            echo "✔ No SQL injection patterns found"
           fi
