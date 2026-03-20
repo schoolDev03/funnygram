@@ -40,18 +40,20 @@ jobs:
         run: |
           echo "Checking for SQL injection patterns..."
 
+          FOUND=0
+
           # scan only php files
           FILES=$(find . -name "*.php")
 
-          FOUND=0
-
           for file in $FILES; do
-            if grep -q "\$_POST" "$file"; then
-              if grep -q "SELECT\|INSERT\|UPDATE\|DELETE" "$file"; then
-                echo "❌ Possible SQL Injection in $file"
+            # check line-by-line
+            while IFS= read -r line; do
+              if echo "$line" | grep -q "\$_POST" && echo "$line" | grep -E -q "SELECT|INSERT|UPDATE|DELETE"; then
+                echo "❌ Possible SQL Injection in $file:"
+                echo "   $line"
                 FOUND=1
               fi
-            fi
+            done < "$file"
           done
 
           if [ $FOUND -eq 1 ]; then
