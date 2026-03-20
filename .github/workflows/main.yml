@@ -34,8 +34,14 @@ jobs:
           echo "No composer.json found, skipping dependency scan"
         fi
 
-    # DevSecOps: Basic Security Scan (Simulated)
+    # DevSecOps: Basic Security Scan
     - name: Scan for insecure patterns
-      run: |
-        echo "Checking for possible insecure code..."
-        grep -r "SELECT .*$_POST" . && echo "⚠ Possible SQL Injection found" || echo "✔ No obvious SQL injection patterns"
+  run: |
+    echo "Checking for possible insecure code..."
+
+    if grep -r "\$_POST" .; then
+      echo "⚠ Detected direct use of \$_POST (Possible SQL Injection)"
+      exit 1
+    else
+      echo "✔ No direct \$_POST usage found"
+    fi
