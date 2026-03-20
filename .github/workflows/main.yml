@@ -1,47 +1,53 @@
 name: Funnygram DevSecOps Pipeline
 
-on: [push]
+on:
+  push:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
+      # Step 1: Checkout code
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.2'
+      # Step 2: Setup PHP
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
 
-    - name: Check PHP Syntax
-      run: find . -name "*.php" -exec php -l {} \;
+      # Step 3: Check PHP syntax (DevOps)
+      - name: Check PHP Syntax
+        run: |
+          find . -name "*.php" -exec php -l {} \;
 
-    # DevSecOps: Composer Security Audit
-    - name: Install Composer
-      run: |
-        php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-        php composer-setup.php
-        php -r "unlink('composer-setup.php');"
+      # Step 4: Install Composer (DevSecOps - dependency tool)
+      - name: Install Composer
+        run: |
+          php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+          php composer-setup.php
+          php -r "unlink('composer-setup.php');"
 
-    - name: Run Dependency Security Check
-      run: |
-        if [ -f composer.json ]; then
-          php composer.phar install
-          php composer.phar audit || true
-        else
-          echo "No composer.json found, skipping dependency scan"
-        fi
+      # Step 5: Dependency Vulnerability Scan (DevSecOps)
+      - name: Run Dependency Security Check
+        run: |
+          if [ -f composer.json ]; then
+            php composer.phar install
+            php composer.phar audit || true
+          else
+            echo "No composer.json found, skipping dependency scan"
+          fi
 
-    # DevSecOps: Basic Security Scan
-    - name: Scan for insecure patterns
-  run: |
-    echo "Checking for possible insecure code..."
+      # Step 6: Basic Security Scan (DevSecOps)
+      - name: Scan for insecure patterns
+        run: |
+          echo "Checking for possible insecure code..."
 
-    if grep -r "\$_POST" .; then
-      echo "⚠ Detected direct use of \$_POST (Possible SQL Injection)"
-      exit 1
-    else
-      echo "✔ No direct \$_POST usage found"
-    fi
+          if grep -r "\$_POST" .; then
+            echo "Detected direct use of \$_POST (Possible SQL Injection)"
+            exit 1
+          else
+            echo "✔ No direct \$_POST usage found"
+          fi
