@@ -1,11 +1,54 @@
 body {
-    font-family: Arial;
-    background: #f4f4f4;
+    background: linear-gradient(135deg, #fff6e5, #ffe0b3);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.navbar {
+    background: #ff9800;
 }
 
 .card {
-    background: white;
-    padding: 15px;
-    margin: 10px;
-    border-radius: 10px;
+    border-radius: 15px;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.02);
+    box-shadow: 0px 8px 20px rgba(0,0,0,0.2);
+}
+
+.btn-primary {
+    background-color: #ff5722;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #e64a19;
+}
+
+.joke-text {
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.like-btn {
+    cursor: pointer;
+    color: green;
+}
+
+.dislike-btn {
+    cursor: pointer;
+    color: red;
+}
+
+.word-counter {
+    font-size: 0.9rem;
+    color: gray;
+}
+.like-btn:hover {
+    color: darkgreen;
+}
+
+.dislike-btn:hover {
+    color: darkred;
 }
