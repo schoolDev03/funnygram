@@ -1,5 +1,4 @@
 <?php include 'db.php';
- $query = "SELECT * FROM users WHERE username='$_POST[user]'";
 
 
 
