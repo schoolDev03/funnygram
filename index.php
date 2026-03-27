@@ -27,7 +27,7 @@ ORDER BY $sort");
 <div class="container mt-4">
 
     <div class="d-flex justify-content-between mb-3">
-        <h3>🔥 Latest todays 27th jines Jokes</h3>
+        <h3>🔥 Latest Jokes</h3>
         <div>
             <a href="?sort=date" class="btn btn-outline-dark btn-sm">Newest</a>
             <a href="?sort=likes" class="btn btn-outline-dark btn-sm">Popular</a>
