@@ -1,5 +1,5 @@
 <?php include 'db.php'
-  $query = "SELECT * FROM users WHERE username='$_POST[user]'";
+$query = "SELECT * FROM users WHERE username='$_POST[user]'";
 
 
 
